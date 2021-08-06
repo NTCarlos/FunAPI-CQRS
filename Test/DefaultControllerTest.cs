@@ -6,10 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Services;
-using Services.DTO;
-using Services.Exceptions.BadRequest;
-using Services.Exceptions.NotFound;
 using System.Threading.Tasks;
 using Xunit;
 

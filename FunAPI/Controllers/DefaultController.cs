@@ -4,6 +4,7 @@ using System;
 using MediatR;
 using Application.Queries.Settings;
 using Common.DTO;
+using Application.Commands;
 
 namespace FunApi.Controllers
 {
@@ -36,10 +37,10 @@ namespace FunApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SettingDto setting)
+        public async Task<IActionResult> Post([FromBody] CreateSettingCommand command)
         {
-            return Ok();
-            // var result = await _defaultService.Add(setting)
+            var result = await _mediator.Send(command);
+            return CreatedAtAction("Get", new { result.Id }, result);
         }
 
         [HttpPut]
