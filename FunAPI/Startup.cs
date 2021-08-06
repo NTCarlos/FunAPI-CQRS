@@ -1,6 +1,7 @@
 using Data;
 using Data.Models;
 using Data.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,7 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,9 +36,6 @@ namespace FunApi
         {
             //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             //    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
-            // Inject Services
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient<IDefaultService, DefaultService>();
             // Add DbContext
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlite("Data Source=testdb.db"));
             services.AddControllers();
@@ -47,6 +44,11 @@ namespace FunApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FunAPI", Version = "v1" });
             });
+
+            //services.AddTransient<IDefaultService, DefaultService>();
+            var assembly = AppDomain.CurrentDomain.Load("Application");
+            services.AddMediatR(assembly);
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
