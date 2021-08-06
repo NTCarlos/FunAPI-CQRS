@@ -31,8 +31,8 @@ namespace FunApi.Controllers
         [HttpGet("Get")]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok();
-            // await _defaultService.Get(id)
+            var query = new GetSettingByIdQuery(id);
+            return Ok(await _mediator.Send(query));
         }
 
         [HttpPost]
